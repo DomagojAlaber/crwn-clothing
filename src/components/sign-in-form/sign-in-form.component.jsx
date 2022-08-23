@@ -1,16 +1,14 @@
-import { React, useState } from "react";
+import { React, useState} from "react";
 
 import FormInput from "../form-input/form-input.component";
-
 import Button from "../button/button.component";
-
-import "./sign-in-form.styles.scss";
 
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
-  signInAuthUserWithEmailAndPassword
+  signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
+
+import "./sign-in-form.styles.scss";
 
 const defaultFormFields = {
   email: "",
@@ -18,40 +16,39 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
-  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [ formFields, setFormFields ] = useState(defaultFormFields);
   const { email, password } = formFields;
-
-  console.log(formFields);
 
   const resetFromFields = () => {
     setFormFields(defaultFormFields);
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    createUserDocumentFromAuth(user);
+    signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(email,password);
-      console.log(response);
+      const { user } = await signInAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+
       resetFromFields();
+      
     } catch (error) {
-      switch(error.code)
-      {
-        case 'auth/wrong-password':
-          alert('incorrect password with email');
-          break
-        case 'auth/user-not-found':
-          alert('no signs of user in our database');
-          break
+      switch (error.code) {
+        case "auth/wrong-password":
+          alert("incorrect password with email");
+          break;
+        case "auth/user-not-found":
+          alert("no signs of user in our database");
+          break;
         default:
           console.log(error);
       }
-      
     }
   };
 
@@ -85,9 +82,10 @@ const SignInForm = () => {
         />
 
         <div className="buttons-container">
-
-        <Button type="submit">Sign In</Button>
-        <Button type='button' buttonType='google'onClick={signInWithGoogle}>Google Sign In</Button>
+          <Button type="submit">Sign In</Button>
+          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+            Google Sign In
+          </Button>
         </div>
       </form>
     </div>
