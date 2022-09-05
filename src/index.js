@@ -1,46 +1,22 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 import "./index.scss";
 import App from "./App";
-import { UserProvider } from "./contexts/user.context";
-import { CategoriesProvider } from "./contexts/categories.context";
-import { CartProvider } from "./contexts/cart.context";
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-     <BrowserRouter>
-       <UserProvider>
-         <CategoriesProvider>
-           <CartProvider>
-             <App />
-           </CartProvider>
-         </CategoriesProvider>
-       </UserProvider>
-     </BrowserRouter>
-   </React.StrictMode>
-)
-
-/*------------------------------------------- OLD CODE ------------------------------------------- */
-
-// const rootElement = document.getElementById("root");
-
-// render(
-//   <React.StrictMode>
-//     <BrowserRouter>
-//       <UserProvider>
-//         <CategoriesProvider>
-//           <CartProvider>
-//             <App />
-//           </CartProvider>
-//         </CategoriesProvider>
-//       </UserProvider>
-//     </BrowserRouter>
-//   </React.StrictMode>,
-//   rootElement
-// );
+    <Provider store={store}>
+      <BrowserRouter>
+          <App />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
+);
