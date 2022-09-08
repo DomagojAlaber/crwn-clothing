@@ -1,15 +1,5 @@
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  writeBatch,
-  query,
-  getDocs,
-} from "firebase/firestore";
-import {
   getAuth,
   signInWithRedirect,
   signInWithPopup,
@@ -19,19 +9,30 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyChoOVvHA3lrd3ge3XEzUXn9kXvNhdva0U",
-  authDomain: "crwn-clothing-db-815a5.firebaseapp.com",
-  projectId: "crwn-clothing-db-815a5",
-  storageBucket: "crwn-clothing-db-815a5.appspot.com",
-  messagingSenderId: "699065848857",
-  appId: "1:699065848857:web:78f952bda22849026a8688",
+  apiKey: "AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk",
+  authDomain: "crwn-clothing-db-98d4d.firebaseapp.com",
+  projectId: "crwn-clothing-db-98d4d",
+  storageBucket: "crwn-clothing-db-98d4d.appspot.com",
+  messagingSenderId: "626766232035",
+  appId: "1:626766232035:web:506621582dab103a4d08d6",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
+
 googleProvider.setCustomParameters({
   prompt: "select_account",
 });
@@ -46,7 +47,8 @@ export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd
+  objectsToAdd,
+  field
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -57,24 +59,20 @@ export const addCollectionAndDocuments = async (
   });
 
   await batch.commit();
-
   console.log("done");
 };
 
 export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories');
-
+  const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-
-  return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
-  
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 
 export const createUserDocumentFromAuth = async (
   userAuth,
-  additionalIformation = {}
+  additionalInformation = {}
 ) => {
   if (!userAuth) return;
 
@@ -91,14 +89,14 @@ export const createUserDocumentFromAuth = async (
         displayName,
         email,
         createdAt,
-        ...additionalIformation,
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("error creating the user", error.message);
     }
   }
 
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -113,10 +111,20 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signOutUser = async () => {
-  await signOut(auth);
-};
+export const signOutUser = async () => await signOut(auth);
 
-export const onAuthStateChangedListener = (callback) => {
+export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
 };
