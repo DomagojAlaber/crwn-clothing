@@ -4,9 +4,9 @@ import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectCartItems  } from "../../store/cart/cart.selector.js";
+import { selectCartItems  } from "../../store/cart/cart.selector.ts";
 
-import { addItemToCart } from "../../store/cart/cart.action.js";
+import { addItemToCart } from "../../store/cart/cart.action.ts";
 
 import {
   ProductCartContainer,

@@ -12,9 +12,9 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectCartItems } from "../../store/cart/cart.selector.js";
+import { selectCartItems } from "../../store/cart/cart.selector.ts";
 
-import { addItemToCart, clearItemFromCart, removeItemFromCart } from "../../store/cart/cart.action.js";
+import { addItemToCart, clearItemFromCart, removeItemFromCart } from "../../store/cart/cart.action.ts";
 
 const CheckoutItem = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
