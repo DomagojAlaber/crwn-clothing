@@ -9,15 +9,16 @@ import {
 
 import { useSelector } from "react-redux";
 
-import { selectCartItems, selectCartTotal } from "../../store/cart/cart.selector.ts";
+import {
+  selectCartItems,
+  selectCartTotal,
+} from "../../store/cart/cart.selector.ts";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
-import PaymentForm from "../../components/payment-form/payment-from.component.jsx";
-
+import PaymentForm from "../../components/payment-form/payment-from.component";
 
 const Checkout = () => {
-
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
 
@@ -44,7 +45,7 @@ const Checkout = () => {
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
       <Total>Total: ${cartTotal}</Total>
-      <PaymentForm/>
+      <PaymentForm />
     </CheckoutContainer>
   );
 };

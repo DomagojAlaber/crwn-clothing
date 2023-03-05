@@ -1,11 +1,11 @@
-import { Title, CategoryContainer } from "./category.styles.jsx";
+import { Title, CategoryContainer } from "./category.styles";
 
 import { useSelector } from "react-redux";
 
 import {
   selectCategoriesIsLoading,
   selectCategoriesMap,
-} from "../../store/categories/category.selector.ts";
+} from "../../store/categories/category.selector";
 
 import ProductCard from "../../components/product-card/product-card.component";
 
@@ -15,13 +15,16 @@ import { useState, useEffect, Fragment } from "react";
 
 import { useParams } from "react-router-dom";
 
+type CategoryRouteParams = {
+  category: string;
+};
+
 const Category = () => {
-  const { category } = useParams();
-
+  const { category } = useParams<
+    keyof CategoryRouteParams
+  >() as CategoryRouteParams;
   const categoriesMap = useSelector(selectCategoriesMap);
-
   const isLoading = useSelector(selectCategoriesIsLoading);
-
   const [products, setProducts] = useState(categoriesMap[category]);
 
   useEffect(() => {
